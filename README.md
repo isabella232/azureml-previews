@@ -5,23 +5,22 @@ Welcome to the Azure Machine Learning previews repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
-2. A terminal. [Install and set up the 2.0 CLI](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
+2. A terminal. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
 
 ## Public previews
 
-Public preview examples can be found at https://github.com/Azure/azureml-examples/tree/main/cli. Documentation for 2.0 preview features is listed below.
+Public preview examples can be found at https://github.com/Azure/azureml-examples/tree/main/cli. Documentation for v2 preview features is listed below.
 
 Installation and set up:
 
-- [Install, set up, and use the 2.0 CLI](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli)
+- [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli)
 - [Set up the VSCode extension](https://docs.microsoft.com/azure/machine-learning/how-to-setup-vs-code)
 
-Train models (create jobs):
+Train models (jobs):
 
-- [Train models (create jobs) with the 2.0 CLI](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli) 
-- [Train models with REST](https://docs.microsoft.com/azure/machine-learning/how-to-train-with-rest)
+- [Train models with the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli) 
 
-Endpoints:
+Deploy models (endpoints and deployments):
 
 - [What are Azure Machine Learning endpoints?](https://docs.microsoft.com/azure/machine-learning/concept-endpoints)
 - [Deploy and score a machine learning model with a managed online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
@@ -34,6 +33,11 @@ Endpoints:
 - [Troubleshooting managed online endpoints](https://docs.microsoft.com/azure/machine-learning/how-to-troubleshoot-managed-online-endpoints)
 - [Batch scoring with batch endpoints](https://docs.microsoft.com/azure/machine-learning/how-to-use-batch-endpoint)
 - [Troubleshooting batch endpoints](https://docs.microsoft.com/azure/machine-learning/how-to-troubleshoot-batch-endpoints)
+
+Reference:
+
+- [CLI (v2) commands](https://docs.microsoft.com/cli/azure/ml?view=azure-cli-latest)
+- [YAML schemas](https://docs.microsoft.com/azure/machine-learning/reference-yaml-overview)
 
 ## Private previews
 
@@ -56,4 +60,3 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 ## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
-
