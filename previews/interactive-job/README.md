@@ -26,15 +26,17 @@ command: sleep infinity # you can add other commands before "sleep infinity" but
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 compute:
   target: azureml:<your attached amlarc compute name>
-interaction_endpoints:
+services:
   "my_jupyter":
-    type: "Jupyter" # Jupyter Notebook
+    job_service_type: "Jupyter" # Jupyter Notebook
   "my_tensorboard":
-    type: "TensorBoard"
+    job_service_type: "TensorBoard"
     properties:
       logDir: "~/tblog" # where you want to store the TensorBoard output 
   "my_jupyterlab":
-    type: "JupyterLab"
+    job_service_type: "JupyterLab"
+  "my_vscode":
+    job_service_type: "vscode"
 ```
 You can also put `sleep <specific time>` at the end of the command to speicify the amount of time you want to reserve the compute resource. The format follows: 
 * sleep 1s
