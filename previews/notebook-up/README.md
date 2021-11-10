@@ -20,6 +20,8 @@ During the private preview, the Azure ML notebook-up feature is available in the
 * West Central US
 * East US
 * East US 2
+* North Europe
+* South Central US
 
 ## Get started 
 
