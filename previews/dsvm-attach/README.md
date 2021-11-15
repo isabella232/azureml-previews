@@ -7,20 +7,19 @@ During private preview you can attach DSVM to Azure ML so that existing DSVM use
 
 Preview features:
 
-![benefit](./media/b2.svg) <strong>Single Sign-on to Jupyter/JupyterLab - no need to use any account and extra password, your AAD credentials will be reused</strong>
+* **Single Sign-on to Jupyter/JupyterLab - no need to use any account and extra password, your AAD credentials will be reused**
 
-![benefit](./media/b5.svg) <strong>Ease of access to resource from Azure ML - e.g. access to Workspace, track experiments, model deployment, etc.</strong>
+* **Ease of access to resource from Azure Machine Learning - e.g. access to Workspace, track experiments, model deployment, etc.**
 
-![benefit](./media/b6.svg) <strong>Maintain the customization available in VMs - ideal for users that need a lot of control over their environment</strong>
+* **Maintain the customization available in VMs - ideal for users that need a lot of control over their environment**
 
-![benefit](./media/b1.svg) <strong>Keep using DSVM - you don't loose access to your VM</strong>
+* **Keep using DSVM - you don't loose access to your VM**
 
 Roadmap:
 
-![benefit](./media/b3.svg) Automatic upgrades of VM Environment (sw/
-packages)
+* Automatic upgrades of VM Environment (SW / packages)
 
-![benefit](./media/b4.svg) Mounted hosted AML Datastores
+* Mounted hosted Azure Machine Learning datastores
 
 
 ## Prerequisites
@@ -62,7 +61,10 @@ This step is needed since the Azure ML service needs to have access to the DSVM 
 ### Steo 2. Attach your DSVM to AML Workspace
 Now you have everything prepared and can attach your DSVM:
 
-1. Go to [Azure Machine Learning Studio](https://ml.azure.com) and select your workspace
+1. Go to [Azure Machine Learning studio](https://ml.azure.com/&flight=DSVMComputeAttach) note the url is `https://ml.azure.com/?flight=DSVMComputeAttach` and select your workspace
+
+> **Important**: enable the Private Preview by adding a parameter `flight=DSVMComputeAttach` at the end of the URL in your browser 
+> ![add-flight-parameter](./media/attach-00-enable-flight.png)
 
 1. Select Compute and then Attached Compute ![select-compute](./media/attach-01-select-compute.png)
 
@@ -82,7 +84,8 @@ You can now work using Jupyter with SSO - try [this tutorial](./docs/attach-dsvm
 ## Known Issues
 
 - I cannot connect to Jupyter/JupyterLab -> make sure your firewall rules are setup correctly
-- I cannot see my previously created content (files, notebooks, etc.) on DSVM when I attach and connect trough Jupyter -> your home folder needs to be linked, e.g. `sudo mount --bind /home/<dsvmuser> /home/<attach-user-name>/`  
+- I cannot see my previously created content (files, notebooks, etc.) on DSVM when I attach and connect trough Jupyter -> your home folder needs to be linked, e.g. `sudo mount --bind /home/<dsvmuser> /home/<attach-user-name>/`
+- I cannot see the option to attach "Data Science VM (Preview)" (as below), instead I see attach normal VM -> make sure you have enabled the flight parameter in the URL (see Step 2 first item) ![troubleshooting](./media/troubleshooting1.png) 
 
 ## Contact Us
 Reach out to us: mimarusa@microsoft.com if you have any questions or feedback.
