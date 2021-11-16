@@ -46,6 +46,7 @@ Reference:
 [pipelines](previews/pipelines)|Pipelines for the CLI (v2), defined through YAML specification
 [interactive-job](previews/interactive-job)|Run an interactive job on Arc compute
 [automl](https://github.com/Azure/AutoML-vNext-Preview)|AutoML for the CLI (v2), defined through YAML specification
+[automl-dnn-nlp](previews/automl-dnn-nlp)|AutoML for language data powered by BERT, available to multiclass, multilabel and NER tasks.
 
 ## Contents
 
