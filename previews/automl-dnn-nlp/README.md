@@ -11,6 +11,21 @@ Currently, our AutoML DNN-NLP service supports three scenarios:
 * Named Entity Recognition (NER)
   * There are multiple possible tags for tokens in sequences. The task is to predict the tags for all the tokens for each sequence.
 
+## What's different from AutoML `classification` scenario
+
+### More focused on text datasets
+
+Existing AutoML `classification` scenario is a general task that encompasses all classification datasets – text, non-text (like numerical and/or categorical), mixed (some columns are text and others aren’t); whereas the new `text-classification` scenario focuses more on handling text datasets.
+
+When used for text data specifically, the new `text-classification` scenario would leverage an end-to-end deep learning model (which we’re continuously working towards improving) for the task; whereas the existing AutoML `classification` scenario may leverage BERT as a featurizer (for certain datasets where it realizes that BERT would outperform more classical text featurizers), in combination with other learners for classification.
+
+### Why it's better on text datasets
+
+Previously AutoML's support for text data in regression, classification and forecasting tasks are only featurization. It applies various featurizations to text data, such as tf-idf, LSTM or BERT, and transform text data into high-dimentional vectors. Here the featurizers are **fixed**, which means no matter what your dataset is and task is, the same piece of text will always create the same vector. These vectors are then merged with other data and model training is done with this fixed, merged tabular dataset.
+
+For AutoML DNN NLP, we use the BERT that is **no longer fixed**. We boost BERT's performance on your specific dataset and task with end-to-end deep learning, which we call finetuning. With our new offering, BERT will update its weighted to adjust to your dataset and task. After finetuning, the same piece of text can be transformed into different vectors. The vectors will store more dataset and task related information. This will in general give you a clear improvement for the model's ability to deal with text data, and do your task with higher quality.
+
+
 ## Installation and set up
 
 * Azure subscription. If you don't have an Azure subscription, , sign up to try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/) today.
