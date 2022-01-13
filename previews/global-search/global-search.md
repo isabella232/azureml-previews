@@ -25,6 +25,15 @@ Change the scope of applicable subscriptions and workspaces by clicking the 'Cha
 
 ![scope change](./media/settings.jpg)
 
+## Structured search 
+
+Click on any number of filters to create more specific search queries. 
+
+Please note: 
+* Quotations are required around values that include spaces or other special characters.  
+* If duplicate filters are provided, only the first will be recognized in search results. 
+
+
 ### Results
 
 Explore the Jobs, Models, and Components tabs to see all search matches. Click on an asset to be directed to the details page in the context of the relevant workspace. 
