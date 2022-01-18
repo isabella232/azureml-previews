@@ -14,8 +14,8 @@ From this centralized global view, select from recently visited workspaces or br
 
 ### Search
 
-Type search text into the global search bar and hit enter to trigger a search. The search result page will land on the most relevant result asset page.
-The search will match the search text in all the metadata fields for the given asset. Results are sorted by relevance as determined by the index service relevancy weightings for the asset columns. 
+Type search text into the global search bar and hit enter to trigger a 'contains' search.
+The search will scan across all metadata fields for the given asset. Results are sorted by relevance as determined by the index service relevancy weightings for the asset columns. 
 
 ![search bar](./media/searchbar.jpg)
 
@@ -27,11 +27,13 @@ Change the scope of applicable subscriptions and workspaces by clicking the 'Cha
 
 ## Structured search 
 
-Click on any number of filters to create more specific search queries. 
+Click on any number of filters to create more specific search queries. If an asset filter (job, model, component) is present, results will be scoped to those tabs. Other filters will apply to all assets unless an asset filter is also present in the query. Similarly, free text search can be provided alongside filters but will scoped to the tabs designated by asset filters if present. 
 
 Please note: 
+* Filters search for exact matches of text. Please use free text queries for 'contains' search.
 * Quotations are required around values that include spaces or other special characters.  
 * If duplicate filters are provided, only the first will be recognized in search results. 
+* While filter strings must match the provided options (ex. job:), input text of any language is supported. 
 
 
 ### Results
