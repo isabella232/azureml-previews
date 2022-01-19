@@ -27,13 +27,21 @@ Change the scope of applicable subscriptions and workspaces by clicking the 'Cha
 
 ## Structured search 
 
-Click on any number of filters to create more specific search queries. If an asset filter (job, model, component) is present, results will be scoped to those tabs. Other filters will apply to all assets unless an asset filter is also present in the query. Similarly, free text search can be provided alongside filters but will scoped to the tabs designated by asset filters if present. 
+Click on any number of filters to create more specific search queries.  The following filters are supported:
+* job: 
+* model:
+* component:
+* tags:
+* submittedBy: 
+
+If an asset filter (job, model, component) is present, results will be scoped to those tabs. Other filters will apply to all assets unless an asset filter is also present in the query. Similarly, free text search can be provided alongside filters but will scoped to the tabs designated by asset filters if present. 
 
 Please note: 
 * Filters search for exact matches of text. Please use free text queries for 'contains' search.
 * Quotations are required around values that include spaces or other special characters.  
 * If duplicate filters are provided, only the first will be recognized in search results. 
 * While filter strings must match the provided options (ex. job:), input text of any language is supported. 
+* The tags filter can accept multiple key:value pairs separated by a comma (ex. tags:"key1:value1","key2:value2")
 
 
 ### Results
