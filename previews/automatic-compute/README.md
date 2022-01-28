@@ -1,38 +1,22 @@
-# [Private Preview] Azure ML Automatic Compute
+# [Private Preview] Azure ML automatic compute
 
 ## Overview
 
-Automatic compute is a private preview feature in Azure ML that enables the submission of training jobs without having to create a compute target. Users can specify their compute requirements directly at job submission time and Azure ML will scale-up/scale-down the appropriate resources required for running the job. This feature is only available in the Studio UI for command jobs during private preview. CLI, SDK, and support for other job types will be added at public preview.
+Azure ML automatic compute is a private preview feature that enables the submission of training jobs without having to create a compute target. Users can specify their compute requirements directly at job submission time and Azure ML will scale-up/scale-down the appropriate resources required for running the job. This feature is only available in the Studio UI for command jobs during private preview. CLI, SDK, and support for other job types will be added at public preview.
 
-To join the private preview, please fill out this [form](#).
+This feature is currently enabled for all internal users at Microsoft. For external users looking to join the private preview, please fill out this [form](https://forms.office.com/r/L3Qz4s9UkB).
 
-## Getting started
-
-### Submit a sample job 
-
-1. Navigate to the <a href="https://ml.azure.com/?flight=clusterlesscompute,clusterlesscomputerun,aml5minstowow" target="_blank">Azure ML Studio UI</a> and click on the `Try it out` card. 
-
-![alt text](./media/11.png)
-
-2. Review the configuration and click `Run sample job`
-
-![alt text](./media/13.png)
-
-3. Wait for the job to queue, and then it should complete in ~5 minutes.
-
-![alt text](./media/10.png)
-
-### Submit a job using a custom script 
+## How to use the feature
 
 For your convenience, this repository includes a training script that can be used as an example to run the job. Steps `3-4` are defaulted to use the provided training script. If using your own code, make sure to fill out the parameters accordingly based on your scenario.
 
-1. Navigate to the <a href="https://ml.azure.com/?flight=clusterlesscompute,clusterlesscomputerun,aml5minstowow" target="_blank">Azure ML Studio UI</a> and click on the `Train your own model` card.
+1. Navigate to the <a href="https://ml.azure.com/" target="_blank">Azure ML Studio UI</a>. Then, on the top left corner, click `+ New`, followed by `Job (preview)`.
 
-![alt text](./media/12.png)
+![alt text](./media/2.png)
 
 2. Make sure that `Automatic (Preview)` is selected as the compute type. Select your compute requirements and click `Next`.
 
-![alt text](./media/3.png)
+![alt text](./media/14.png)
 
 3. Select the `TensorFlow 2.4` environment and click `Next`
 
@@ -44,7 +28,7 @@ For your convenience, this repository includes a training script that can be use
 
 5. Review your settings and click `Create`
 
-![alt text](./media/6.png)
+![alt text](./media/15.png)
 
 6. Wait for the job to prepare. This may take a couple minutes if a job has not been submitted for awhile.
 
