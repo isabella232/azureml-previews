@@ -55,18 +55,18 @@ Below is a template yaml file defines a profiling job.
 :::code language="yaml" source="https://github.com/tracychms/profiling/blob/main/code/profiling/profiling_job_tmpl.yml" :::
 
 YAML syntax
-Key | Type  | Description | Allowed values | Default value
-`environment.image` | string | An Azure Machine Learning curated image containing benchmarking tools and profiling scripts. | docker.io/rachyong/profilers:latest |
-`environment_variables.ONLINE_ENDPOINT` | string | The online endpoint to be profiled. |  | 
-`environment_variables.DEPLOYMENT` | string | The online deployment hosting the model to be profiled. |  | 
-`environment_variables.PROFILING_TOOL` | string | The list of supported benchmarking tools. | `wrk`, `wrk2`, `labench` | `wrk`
-`environment_variables.DURATION` | string | Period of time for running the benchmarking tool. Supported by `wrk`, `wrk2` and `labench`. |  | `300s`
-`environment_variables.CONNECTIONS` | string | Number of connections for the benchmarking tool. Default value is set to be the number of `request_settings.max_concurrent_requests_per_instance`, or `WORKER_COUNT` in environment variables in online deployment, or 1 if both two values are not set or Null. Supported by `wrk` and `wrk2`. |  | 
-`environment_variables.THREAD` | string | Number of threads allocated for the benchmarking tool. Supported by `wrk` and `wrk2`. |  | `1`
-`environment_variables.TARGET_RPS` | string | Target reuest per second for the benchmarking tool. Supported by `wrk2` and `labench`. |  | `50`
-`environment_variables.CLIENTS` | string | Number of clients for the benchmarking tool. Default value is set to be the number of `request_settings.max_concurrent_requests_per_instance`, or `WORKER_COUNT` in environment variables in online deployment, or 1 if both two values are not set or Null. Supported by `labench`. |  | 
-`environment_variables.TIMEOUT` | string | Timeout in seconds for each request. Supported by `labench`. |  | `10s`
-`inputs.payload` | string | The file of sampled payload containing a list of JSON objects that is stored in an AML registered datastore. |  | 
+| Key | Type  | Description | Allowed values | Default value |
+| `environment.image` | string | An Azure Machine Learning curated image containing benchmarking tools and profiling scripts. | docker.io/rachyong/profilers:latest | |
+| `environment_variables.ONLINE_ENDPOINT` | string | The online endpoint to be profiled. |  |  |
+| `environment_variables.DEPLOYMENT` | string | The online deployment hosting the model to be profiled. |  |  |
+| `environment_variables.PROFILING_TOOL` | string | The list of supported benchmarking tools. | `wrk`, `wrk2`, `labench` | `wrk` |
+| `environment_variables.DURATION` | string | Period of time for running the benchmarking tool. Supported by `wrk`, `wrk2` and `labench`. |  | `300s` |
+| `environment_variables.CONNECTIONS` | string | Number of connections for the benchmarking tool. Default value is set to be the number of `request_settings.max_concurrent_requests_per_instance`, or `WORKER_COUNT` in environment variables in online deployment, or 1 if both two values are not set or Null. Supported by `wrk` and `wrk2`. |  |  |
+| `environment_variables.THREAD` | string | Number of threads allocated for the benchmarking tool. Supported by `wrk` and `wrk2`. |  | `1` |
+| `environment_variables.TARGET_RPS` | string | Target reuest per second for the benchmarking tool. Supported by `wrk2` and `labench`. |  | `50` |
+| `environment_variables.CLIENTS` | string | Number of clients for the benchmarking tool. Default value is set to be the number of `request_settings.max_concurrent_requests_per_instance`, or `WORKER_COUNT` in environment variables in online deployment, or 1 if both two values are not set or Null. Supported by `labench`. |  |  |
+| `environment_variables.TIMEOUT` | string | Timeout in seconds for each request. Supported by `labench`. |  | `10s` |
+| `inputs.payload` | string | The file of sampled payload containing a list of JSON objects that is stored in an AML registered datastore. |  |  |
 
 #### Create a profiling job
 
@@ -80,4 +80,4 @@ Update the profiling job yaml template with your own values and create a profili
 
 ## Contact us
 
-For any questions, bugs and requests of new features, please contact us at [](mailto:)
+For any questions, bugs and requests of new features, please contact us at [mprof@microsoft.com](mailto:mprof@microsoft.com)
