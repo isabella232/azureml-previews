@@ -11,7 +11,7 @@ Users can now search for machine learning assets such as jobs, models, component
 
 From this centralized global view, select from recently visited workspaces or browse documentation and tutorial resources.
 
-![Screenshot showing the global view homepage.](./media/globalview.png)
+![Screenshot showing the global view homepage.](./media/globalview.jpg)
 
 ### Search
 
