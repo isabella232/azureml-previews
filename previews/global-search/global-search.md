@@ -33,8 +33,8 @@ Click on any number of filters to create more specific search queries. The follo
 * Job: 
 * Model:
 * Component:
-* Datasets:
-* Environments:
+* Dataset:
+* Environment:
 * Tags:
 * SubmittedBy: 
 
@@ -43,7 +43,7 @@ If an asset filter (job, model, component, dataset, environment) is present, res
 > [!TIP] 
 > * Filters search for exact matches of text. Use free text queries for a contains search.
 > * Quotations are required around values that include spaces or other special characters.  
-> * If duplicate filters are provided, only the first will be recognized in search results. 
+> * If duplicate *asset* filters are provided, only the first will be recognized in search results. 
 > * Input text of any language is supported but filter strings must match the provided options (ex. submittedBy:).
 > * The tags filter can accept multiple key:value pairs separated by a comma (ex. tags:"key1:value1, key2:value2").
 
