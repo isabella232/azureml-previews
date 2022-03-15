@@ -24,7 +24,7 @@ Use the asset quick links to navigate to search results for jobs, models, compon
 
 Change the scope of applicable subscriptions and workspaces by clicking the 'Change' link. 
 
-![Screenshot showing how to change scope of workspaces and subscriptions reflected in results.](./media/how-to-search-cross-workspace/settings.png)
+![Screenshot showing how to change scope of workspaces and subscriptions reflected in results.](./media/settings.jpg)
 
 
 ### Structured search 
@@ -62,7 +62,7 @@ To add more specificity to the search results, use the column filters sidebar.
 
 Customize the display of columns in the search results table. These views can be saved and shared as well. 
 
-![Screenshot showing how to create custom column views on the search results page.](./media/how-to-search-cross-workspace/custom-views.jpg)
+![Screenshot showing how to create custom column views on the search results page.](./media/views.jpg)
 
 
 ### Known issues
