@@ -24,7 +24,7 @@ Use the asset quick links to navigate to search results for jobs, models, compon
 
 Change the scope of applicable subscriptions and workspaces by clicking the 'Change' link. 
 
-![Screenshot showing how to change scope of workspaces and subscriptions reflected in results.](./media/settings.jpg)
+![Screenshot showing how to change scope of workspaces and subscriptions reflected in results.](./media/settings.png)
 
 
 ### Structured search 
