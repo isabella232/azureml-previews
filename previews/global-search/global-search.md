@@ -18,7 +18,7 @@ From this centralized global view, select from recently visited workspaces or br
 Type search text into the global search bar and hit enter to trigger a 'contains' search.
 The search will scan across all metadata fields for the given asset. Results are sorted by relevance as determined by the relevance weightings for the asset columns. 
 
-![Screenshot showing the search bar experience.](./media/how-to-search-cross-workspace/search-bar.png)
+![Screenshot showing the search bar experience.](./media/search-bar.png)
 
 Use the asset quick links to navigate to search results for jobs, models, components, environments, and datasets created by you. 
 
@@ -52,7 +52,7 @@ If an asset filter (job, model, component, dataset, environment) is present, res
 
 Explore the Jobs, Models, Components, Datasets, and Environments tabs to view all search results. Click on an asset to be directed to the details page in the context of the relevant workspace. Results from workspaces a user doesn't have access to won't be displayed, click on the 'details' button to view the list of workspaces.
 
-![Screenshot showing search results of query.](./media/how-to-search-cross-workspace/results.png)
+![Screenshot showing search results of query.](./media/search-results.png)
 
 ### Filters
 
