@@ -43,6 +43,7 @@ __Warning:__
 
 ## End to end example
 ### Step 1: Prerequisites
+* This private preview is by __invite only__ at this time. The subscription id and tenant id needs to be added to our allow-list.
 * Install and configure the Azure CLI and the ml extension to the Azure CLI. For more information, see [Install, set up, and use the CLI (v2) (preview)](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli). 
 * You must have an Azure resource group, and you (or the service principal you use) must have Contributor access to it. A resource group is created in [Install, set up, and use the CLI (v2) (preview)](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
 * If you haven't already set the defaults for the Azure CLI, save your default settings. To avoid passing in the values for your subscription and resource group multiple times, run this code:
@@ -61,6 +62,7 @@ __Warning:__
     $Env:AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=$true
     ```
      To deactivate either set the value to false or delete the environment variable.
+* ACR needs to be premium SKU. If you use the below workspace setup script, this will be handled.
 
 ### Prepare your system
 Clone the azureml-examples repo and navigate to the working folder.
