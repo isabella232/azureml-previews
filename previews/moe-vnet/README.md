@@ -8,15 +8,43 @@ Key benefits to the users are:
 1. Secure connectivity helps with Data Exfiltration Protection.
 2. No additional configuration is needed in user's VNET/NSG.
 
+## Control plane vs data plane operations
+In summary, scope of the the capablities described in this document is regarding the endpoints **data plane** operations. Details are explained below.
+
+Azure operations can be divided into two categories - [control plane and data plane](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/control-plane-and-data-plane). 
+
+### Control plane
+You use the control plane operations to manage resources in your subscription. All requests for control plane operations are sent to the Azure Resource Manager URL. The endpoint control plane operations include create, update, delete etc. All operations through CLI V2/ARM/REST fall under this category (for e.g. in case of online deployments, get-logs uses ARM). More information [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace-cli?tabs=vnetpleconfigurationsv2cli%2Ccreatenewresources%2Cworkspaceupdatev1%2Cworkspacesynckeysv1%2Cworkspacedeletev1#secure-cli-communications). To secure the control plane operations, you have to 
+1. Setup [ARM private link (preview)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/create-private-link-access-portal). Please be aware of the [limitations](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/create-private-link-access-portal#understand-architecture).
+1. Set the workspace flag `public_network_access` to `disabled`
+
+__Warning__: Currently ARM private link preview can be enabled only at tenant level. However you can skip this if your requirement is to secure the data plane (explained below).
+
+### Data plane
+The only data plane operation is to invoke/score your endpoint. Focus of rest of this document is to explain how to setup network isolation for this usecase flow.
+__This setup is independent of the control plane security configuration__. i.e. even if you choose not configure the above control plane security steps, you can fully configure data plane security.
+
 ## Concept
 
 ![High Level Architecture](./media/vnet_architecture.jpg)
 
-With workspace PE support, you can secure the ingress by creating a [PE to the workspace](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-private-link?tabs=azurecliextensionv2).
+### Secure the ingress (private preview)
+Endpoint visibility will be determined if there is a PE assoiciated with the workspace. Incase there is a PE, then endpoint visibility will be private. If there is no PE then the visiblity be public.
 
+### Secure the ingress (upcoming public preview)
+__Note:__ This is a heads up for public preview. Will not work with private preview yet.
+
+The goal here is to secure the model serving endpoint (scoring_uri) so that it can accessed only from a private IP from your vnet via a private endpoint. To secure the ingress, configure the following:
+1. [Setup a PE to the ML workspace](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-private-link?tabs=azurecliextensionv2).
+2. Visibility of the scoring endpoint is governed by an endpoint flag `public_network_access`.  If it is `disabled` then scoring endpoints can be accessed only from VNETs that have PEs to the workspace. If it is `enabled`, the scoring endpoint can be accessed both from the PEs and public networks.
+```bash
+az ml online-endpoint create -f endpoint.yml --set public_network_access=disabled
+```
+
+### Secure the egress
 With secure egress support, PE's are created from the managed endpoint deployment to workspace resources including ACR, KeyValut, Workspace, Filestore & Blob store. Internet access is not permitted. 
 
-When you create managed online deployments you have the option of setting a flag `private_network_connection true`. Now all system communication will use the PEs (downloading model, code, images etc to the container). Any user logic leveraging these resources will also use the PEs. No additional configuration in user’s vnet are required.
+When you create managed online deployments you have the option of setting a flag `private_network_connection` as `true`. Now all system communication will use the PEs (downloading model, code, images etc to the container). Any user logic leveraging these resources will also use the PEs. No additional configuration in user’s vnet are required.
 
 This is the syntax to create a managed online deployment with secure egress.
 ```bash
@@ -29,17 +57,37 @@ Visibility of the scoring endpoint is governed by the [workspace flag `public_ne
 
 __Note__: During this preview private endpoints to workspace resources are created per deployment - not per workspace as shown in the above diagram
 
-### Supported scenarios
+### Supported scenarios (upcoming public preview)
 
-|Workspace property | Deployment property | Supported?|
-|----------------|----------------------------------|---|
-| `public_access_enabled` is Enabled| `private_network_connection` is false (default) | Yes |
-| `public_access_enabled` is Disabled| `private_network_connection` is true) | Yes |
-
+| Scenario | Ingress mode (endpoint property) | Egress mode (Deployment property) | Supported? |
+| -------- | -------------------------------- | --------------------------------- | --------- |
+| secure ingress with secure egress | `public_network_access` is disabled | `private_network_connection` is true   | Yes |
+| secure ingress with public egress | `public_network_access` is dsiabled | `private_network_connection` is false  | Yes |
+| public ingress with secure egress | `public_network_access` is enabled | `private_network_connection` is true    | Yes |
+| public ingress with public egress | `public_network_access` is enabled | `private_network_connection` is false  | Yes |
 
 __Warning:__
-1. If you create a deployment with `private_network_connection true`, the workspace flag `public_access_enabled` will automatically be changed to `Disabled`
-1. If workspace public_network_access gets disabled for a workspace with existing public managed endpoints, then (a) the endpoints will not be publicly accessable (b) the public deployments will start failing
+If workspace flag `public_network_access` is `disabled`:
+1. only private deployments will be allowed to be created (i.e. deployments with `private_network_connection` is `true`).
+1. if it gets disabled for a workspace with existing public managed endpoints, then the public deployments will start failing.
+
+### ARM contract (upcoming public preview)
+
+Endpoint flag for public network access
+```json
+"properties": {
+        "publicNetworkAccess": "Enabled"
+}
+```
+The flag can take the values Enabled or Disabled.
+
+Deployment flag for private network connection
+```json
+"properties": {
+        "privateNetworkConnection": "True"
+}
+```
+The flag can take the values True or False
 
 ## End to end example
 ### Step 1: Prerequisites
@@ -72,8 +120,8 @@ cd azureml-examples/cli
 ```
    
 
-### Step 2: Create secure workspace
-If you have your own secure workspace setup, you could use that. Alternatively the below template will create the complete setup required for testing this feature:
+### Step 2: Create workspace and secured resources setup
+If you have your own workspace and secure resources setup, you could use that. Alternatively the below template will create the complete setup required for testing this feature:
 ![Sample setup](./media/vnet_sample_deployment_arch.jpg)
 ```bash
 # SUFFIX will be used as resource name suffix in created workspace and related resources
@@ -82,7 +130,7 @@ export SUFFIX="<UNIQUE_SUFFIX>"
 az deployment group create --template-file endpoints/online/managed/vnet/setup/main.bicep --parameters suffix=$SUFFIX
 ```
 The following resources will be created:
-1. Azure ML workspace with public_network_access as disabled
+1. Azure ML workspace with public_network_access as enabled
 2. ACR, storage and keyvault with public access disabled
 3. A user vnet that will be used for scoring. Private endpoints will be created from this VNET to the above resources: Azure ML workspace, ACR, Keyvault, File and Blob stores.
 4. A scoring subnet (snet-scoring) will be created with the outbound NSG rules as shown in the above picture. Internet outbound is enabled to get access to anaconda/pypi, get access to azureml-examples repo and download azure cli. You can disable it based on your needs.
@@ -167,7 +215,7 @@ As you will see in the next step, we will be using custom [container support](ht
 #### Alternate option
 Alternatively, you can build the docker image in your vnet using azure ml compute cluster and azure ml environments. Instructions [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-workspace-vnet?tabs=pe%2Ccli#enable-azure-container-registry-acr).
 
-### Step 5: Create managed online endpoint and deployment
+### Step 5: Create managed online endpoint with secure ingress and deployment with secure egress
 We will use the example [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints#deploy-to-azure) to create the endpoint and deployment
 
 ```bash
@@ -175,13 +223,13 @@ We will use the example [here](https://docs.microsoft.com/en-us/azure/machine-le
 cd /home/samples/azureml-examples/cli/
 # enable private preivew features in cli
 export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
-# create endpoint
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/vnet/endpoint.yml
+# public_network_access flag is expected to be added for public preview
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/vnet/endpoint.yml # --set public_network_access="disabled"
 # create deployment with private_network_connection="true"
 az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/vnet/blue-deployment-vnet.yml --all-traffic --set environment.image="$ACR_NAME.azurecr.io/repo/img:v1" private_network_connection="true"
 ```
 
-Note the flag  `--set private_network_connection true`.
+Note the flags `--set public_network_access=disabled` in the endpoint creation and `--set private_network_connection=true` in the deployment creation.
 
 Now you can test scoring using the `invoke` command from the cli or using curl
 ```bash
