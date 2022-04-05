@@ -149,6 +149,40 @@ if __name__ == '__main__':
 
 Here, `read_path` and `write_path` can be used to interact with the data.
 
+
+## Troubleshooting
+
+### Network connectivity
+
+Your HDFS nodes as well as Kerberos KDC servers must be reachable from the Kubernetes cluster nodes configured as your AML Arc compute target. To validate this requirement
+follow these steps:
+
+* SSH to any of your Kubernetes cluster nodes for your AML Arc compute target;
+
+* Check connectivity to Kerberos KDC:
+```bash
+nc -v <kdc_address> <kdc_port>              # KDC typically uses ports 88 or 750 (this can also be found in /etc/krb5kdc/kdc.conf file on your KDC server)
+```
+
+* Check connectivity to HDFS nodes:
+```bash
+nc -v <namenode_adddress> <hdfs_port>   # Contact your HDFS admin for details about HDFS ports
+nc -v <datanodes_adddress> <hdfs_port>   # Contact your HDFS admin for details about HDFS ports
+```
+
+* DNS reverse lookup:
+
+Verify that both the KDC and HDFS fully qualified domain names (FQDN) can be reverse-looked up from their IP address.
+
+```bash
+host <hdfs_namenode_IP>
+
+host <kcd_IP>
+```
+
+Note: if your Kubernetes cluster nodes have a `/etc/hosts` file with entries for HDFS or KDC hostnames, check those values instead. Ensure no duplicate entries are present that map different hostnames to IP addresses of your HDFS and KDC servers.
+
+
 ## Next steps
 
 Please take a look at the code samples provided in the [samples](./samples) directory.  We're looking forward your feedback!
