@@ -126,7 +126,7 @@ export SUFFIX="<UNIQUE_SUFFIX>"
 az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/main.bicep --parameters suffix=$SUFFIX
 ```
 The following resources will be created:
-1. Azure ML workspace with public_network_access as enabled
+1. Azure ML workspace with public_network_access as enabled. IF you need to dosable his then you need to enable ARM private link preview. More about this [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace-cli?tabs=vnetpleconfigurationsv2cli%2Ccreatenewresources%2Cworkspaceupdatev1%2Cworkspacesynckeysv1%2Cworkspacedeletev1#secure-cli-communications)
 2. ACR, storage and keyvault with public access disabled
 3. A user vnet that will be used for scoring. Private endpoints will be created from this VNET to the above resources: Azure ML workspace, ACR, Keyvault, File and Blob stores.
 4. A scoring subnet (snet-scoring) will be created with the outbound NSG rules as shown in the above picture. Internet outbound is enabled to get access to anaconda/pypi, get access to azureml-examples repo and download azure cli. You can disable it based on your needs.
@@ -177,7 +177,7 @@ export ACR_NAME=cr$SUFFIX
 # provide a unique name for the endpoint
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 
-# name of the image that will be built for this sample and pushed into acr - no need to change this
+# name of the image that will be built for this sample and pushed into acr
 export IMAGE_NAME="img"
 
 # Yaml files that will be used to create endpoint and deployment. These are relative to azureml-examples/cli/ directory. Do not change these
@@ -249,3 +249,16 @@ SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scorin
 curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --data @$SAMPLE_REQUEST_PATH
 ```
 
+### Step 6: Cleanup
+Delete the endpoint
+``` bash
+az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
+```
+
+Exit ssh and delete the VM
+```bash
+#run this from the ssh session
+exit
+#run this from your command line from which you created the vm
+az vm delete -n test-vm -y --no-wait
+```
