@@ -18,7 +18,7 @@ You use the control plane operations to manage resources in your subscription. A
 1. Setup [ARM private link (preview)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/create-private-link-access-portal). Please be aware of the [limitations](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/create-private-link-access-portal#understand-architecture).
 1. Set the workspace flag `public_network_access` to `disabled`
 
-__Warning__: Currently ARM private link preview can be enabled only at tenant level. However you can skip this if your requirement is to secure the data plane (explained below).
+__Note__: Currently ARM private link preview can be enabled only at tenant level. However you can skip this if your requirement is to secure the data plane (explained below).
 
 ### Data plane
 The only data plane operation is to invoke/score your endpoint. Focus of rest of this document is to explain how to setup network isolation for this usecase flow.
@@ -127,7 +127,7 @@ If you have your own workspace and secure resources setup, you could use that. A
 # SUFFIX will be used as resource name suffix in created workspace and related resources
 export SUFFIX="<UNIQUE_SUFFIX>"
 # This bicep template sets up secure workspace and relevant resources
-az deployment group create --template-file endpoints/online/managed/vnet/setup/main.bicep --parameters suffix=$SUFFIX
+az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/main.bicep --parameters suffix=$SUFFIX--parameters suffix=$SUFFIX
 ```
 The following resources will be created:
 1. Azure ML workspace with public_network_access as enabled
@@ -170,12 +170,25 @@ Setup environment variables
 export SUBSCRIPTION="<YOUR_SUBSCRIPTION_ID>"
 export RESOURCE_GROUP="<YOUR_RESOURCE_GROUP>"
 export LOCATION="<LOCATION>"
-# SUFFIX used during the initial setup. Alternatively the resource names can be looked up from the resource group after the  setup script has completed.
+
+# SUFFIX that was used when creating the workspace resources. Alternatively the resource names can be looked up from the resource group after the vnet setup script has completed.
 export SUFFIX="<SUFFIX_USED_IN_SETUP>"
+
+# SUFFIX used during the initial setup. Alternatively the resource names can be looked up from the resource group after the  setup script has completed.
 export WORKSPACE=mlw-$SUFFIX
 export ACR_NAME=cr$SUFFIX
-export WORKSPACE=mlw-$SUFFIX
+
+# provide a unique name for the endpoint
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+
+# name of the image that will be built for this sample and pushed into acr - no need to change this
+export IMAGE_NAME="img"
+
+# Yaml files that will be used to create endpoint and deployment. These are relative to azureml-examples/cli/ directory. Do not change these
+export ENDPOINT_FILE_PATH="endpoints/online/managed/vnet/sample/endpoint.yml"
+export DEPLOYMENT_FILE_PATH="endpoints/online/managed/vnet/sample/blue-deployment-vnet.yml"
+export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet/sample/sample-request.json"
+export ENV_DIR_PATH="endpoints/online/managed/vnet/sample/environment"
 ```
 
 Login using az cli. Alternatively you can use [service principal based authentication](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli#sign-in-with-a-service-principal).
@@ -200,15 +213,15 @@ Since internet egress is not allowed, we need to have a fully built image in ACR
 
 ```bash
 # Navigate to the samples
-cd /home/samples/azureml-examples/cli/endpoints/online/managed/vnet/environment
+cd /home/samples/azureml-examples/cli/$ENV_DIR_PATH
 # login to acr. Optionally, to avoid using sudo, complete the docker post install steps: https://docs.docker.com/engine/install/linux-postinstall/
 sudo az acr login -n $ACR_NAME
 # Build the docker image with the sample docker file
-sudo docker build -t $ACR_NAME.azurecr.io/repo/img:v1 .
+sudo docker build -t $ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1 .
 # push the image to the ACR
-sudo docker push $ACR_NAME.azurecr.io/repo/img:v1
+sudo docker push $ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1
 # check if the image exists in acr
-az acr repository show -n $ACR_NAME --repository repo/img
+az acr repository show -n $ACR_NAME --repository repo/$IMAGE_NAME
 ```
 As you will see in the next step, we will be using custom [container support](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-container), to deploy this custom built image into managed endpoints.
 
@@ -219,14 +232,12 @@ Alternatively, you can build the docker image in your vnet using azure ml comput
 We will use the example [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints#deploy-to-azure) to create the endpoint and deployment
 
 ```bash
-# navigate to the cli directory in the azurem-examples repo
 cd /home/samples/azureml-examples/cli/
-# enable private preivew features in cli
-export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
-# public_network_access flag is expected to be added for public preview
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/vnet/endpoint.yml # --set public_network_access="disabled"
-# create deployment with private_network_connection="true"
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/vnet/blue-deployment-vnet.yml --all-traffic --set environment.image="$ACR_NAME.azurecr.io/repo/img:v1" private_network_connection="true"
+
+# create endpoint
+az ml online-endpoint create --name $ENDPOINT_NAME -f $ENDPOINT_FILE_PATH
+# create deployment in managed vnet
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f $DEPLOYMENT_FILE_PATH --all-traffic --set environment.image="$ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1" private_network_connection="true"
 ```
 
 Note the flags `--set public_network_access=disabled` in the endpoint creation and `--set private_network_connection=true` in the deployment creation.
@@ -234,12 +245,11 @@ Note the flags `--set public_network_access=disabled` in the endpoint creation a
 Now you can test scoring using the `invoke` command from the cli or using curl
 ```bash
 # Try scoring using the CLI
-az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/managed/vnet/sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file $SAMPLE_REQUEST_PATH
 
 # Try scoring using curl
 ENDPOINT_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
 SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
-curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --data @endpoints/online/model-1/sample-request.json
+curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --data @$SAMPLE_REQUEST_PATH
 ```
 
-Note: If you use workspace PE, then you need to execute the above commands from within your VNET.
