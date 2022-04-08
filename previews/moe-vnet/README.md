@@ -14,11 +14,7 @@ In summary, scope of the the capablities described in this document is regarding
 Azure operations can be divided into two categories - [control plane and data plane](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/control-plane-and-data-plane). 
 
 ### Control plane
-You use the control plane operations to manage resources in your subscription. All requests for control plane operations are sent to the Azure Resource Manager URL. The endpoint control plane operations include create, update, delete etc. All operations through CLI V2/ARM/REST fall under this category (for e.g. in case of online deployments, get-logs uses ARM). More information [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace-cli?tabs=vnetpleconfigurationsv2cli%2Ccreatenewresources%2Cworkspaceupdatev1%2Cworkspacesynckeysv1%2Cworkspacedeletev1#secure-cli-communications). To secure the control plane operations, you have to 
-1. Setup [ARM private link (preview)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/create-private-link-access-portal). Please be aware of the [limitations](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/create-private-link-access-portal#understand-architecture).
-1. Set the workspace flag `public_network_access` to `disabled`
-
-__Note__: Currently ARM private link preview can be enabled only at tenant level. However you can skip this if your requirement is to secure the data plane (explained below).
+You use the control plane operations to manage resources in your subscription. All requests for control plane operations are sent to the Azure Resource Manager URL. The endpoint control plane operations include create, update, delete etc. All operations through CLI V2/ARM/REST fall under this category (for e.g. in case of online deployments, get-logs uses ARM). More information [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace-cli?tabs=vnetpleconfigurationsv2cli%2Ccreatenewresources%2Cworkspaceupdatev1%2Cworkspacesynckeysv1%2Cworkspacedeletev1#secure-cli-communications). 
 
 ### Data plane
 The only data plane operation is to invoke/score your endpoint. Focus of rest of this document is to explain how to setup network isolation for this usecase flow.
