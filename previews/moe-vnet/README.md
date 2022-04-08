@@ -127,7 +127,7 @@ If you have your own workspace and secure resources setup, you could use that. A
 # SUFFIX will be used as resource name suffix in created workspace and related resources
 export SUFFIX="<UNIQUE_SUFFIX>"
 # This bicep template sets up secure workspace and relevant resources
-az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/main.bicep --parameters suffix=$SUFFIX--parameters suffix=$SUFFIX
+az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/main.bicep --parameters suffix=$SUFFIX
 ```
 The following resources will be created:
 1. Azure ML workspace with public_network_access as enabled
