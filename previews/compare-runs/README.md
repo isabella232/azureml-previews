@@ -11,7 +11,7 @@ This feature is currently enabled for all internal users at Microsoft. For exter
 
 ![alt text](./media/1.png)
 
-2. Choose the experiment that contains the runs you would like to compare or if the runs are across different expeirments select the `All runs tab`.
+2. Choose the experiment that contains the runs you would like to compare or if the runs are across different experiments select the `All runs tab`.
 
 ![alt text](./media/2.png)
 
