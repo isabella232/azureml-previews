@@ -17,7 +17,7 @@ git clone --depth 1 https://github.com/Azure/azureml-examples --branch sdk-previ
 cd azureml-examples/sdk
 ```
 
-All the files and code used in this document are available in `jobs/pipelines/e2epipelinesample` folder.
+All the files and code used in this document are available in `jobs/pipelines/e2epipelinesample<TBD>` folder.
 
 ## Introducing machine learning pipelines
 
@@ -31,14 +31,12 @@ In this example we will be building a pipeline which performs 5 tasks:
 * Test using the model
 * Score using the model
 
-The end result will look like this
-:::image type="content" source="media/pipeline-structure.jpg" alt-text="Pipeline Structure":::
-
-Each of the above steps will be constructed as a component. A component is similar to a command as seen in [train models](train-sdkv2.md) sample. However, components are reusable because they define placeholders for input and output parameters instead of predefined values. The input output values can be provided when constructing the pipleine. For more details, see [What is an Azure Machine Learning component?](https://docs.microsoft.com/azure/machine-learning/concept-component). 
+Each of the above steps will be constructed as a component. A component is similar to a command as seen in [train models](train-sdkv2.md) sample. However, components are reusable because they define placeholders for input and output parameters instead of predefined values. The input output values can be provided when constructing the pipeline. For more details, see [What is an Azure Machine Learning component?](https://docs.microsoft.com/azure/machine-learning/concept-component).
 
 ## Build the pipeline
 
-Let us look how to construct this pipeline. 
+Let us look how to construct this pipeline.
+
 ### Prepare Data
 
 The first step is to load the data. We will do this using a component to load data.
@@ -85,7 +83,7 @@ command: >-
   --transformed_data ${{outputs.transformed_data}}
 ```
 
-As can be seen, the YAML format structure is similar to the python code to define a command. In fact, this is what allows the YAML to be loaded as a compnent in python. To load this yaml file into a component we will use the following code:
+As can be seen, the YAML format structure is similar to the python code to define a command. In fact, this is what allows the YAML to be loaded as a component in python. To load this yaml file into a component we will use the following code:
 
 ```python
 from azure.ml.entities import load_component
@@ -107,7 +105,7 @@ score_data = load_component(yaml_file="./score.yml")
 
 ### Construct the pipeline
 
-Now that we have all the indivudual pieces ready, we will construct a pipeline by stringing them together. The individual pieces are connected to each other using inputs and outputs. To construct the pipeline we will use the `dsl` or Domain Specific Language of Azure ML. Refer the documentation [here](https://review.docs.microsoft.com/python/api/azure-ml/azure.ml.dsl?view=azure-ml-py&branch=sdk-cli-v2-preview-master) for more details.
+Now that we have all the individual pieces ready, we will construct a pipeline by stringing them together. The individual pieces are connected to each other using inputs and outputs. To construct the pipeline we will use the `dsl` or Domain Specific Language of Azure ML. Refer the documentation [here](https://review.docs.microsoft.com/python/api/azure-ml/azure.ml.dsl?view=azure-ml-py&branch=sdk-cli-v2-preview-master) for more details.
 
 ```python
 from azure.ml import dsl
@@ -139,6 +137,9 @@ def nyc_taxi_data_regression(pipeline_job_input):
     }
 ```
 
+This is how the steps relate to each other.
+:::image type="content" source="media/pipeline-structure.jpg" alt-text="Pipeline Structure":::
+
 Let us examine the code. In this line, the compute and storage needed to run the pipeline is defined.
 
 ```python
@@ -167,7 +168,8 @@ pipeline = nyc_taxi_data_regression(
 ```
 
 ### Run the pipeline
-Now that we have constrcuted the pipeline, let us run the pipeline. To run the pipeline, we first need to connect to a workspace.
+
+Now that we have constructed the pipeline, let us run the pipeline. To run the pipeline, we first need to connect to a workspace.
 
 #### 1. Connect to the workspace
 

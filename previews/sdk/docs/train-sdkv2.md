@@ -104,18 +104,18 @@ except Exception:
 To run our script on `cpu-cluster`, we need an environment which has the required packages and dependencies to run our script. There are a few options available for environments:
 
 1. Use a curated environment in your workspace - Azure ML offers several curated [environments](https://ml.azure.com/environments) which cater to various needs.
-1. Use a custom environment - Azure ML allows you to create your own environment using 
+1. Use a custom environment - Azure ML allows you to create your own environment using
    * A docker image
    * A base docker image with a conda YAML to customize further
    * A docker build context
 
    Check this [example](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/assets/environment/environment.ipynb) on how to create custom environments.
 
-For our case we will use a curated environment provided by Azure ML for `lightgm` called `AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu`
+For our case we will use a curated environment provided by Azure ML for `lightgbm` called `AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu`
 
 ### 4. Submit a job to run the script
 
-To run this script we will use a `command`. The command will be run by submitting it as a `job` to Azure ML. 
+To run this script we will use a `command`. The command will be run by submitting it as a `job` to Azure ML.
 
 <!--[!notebook-python[] (~/azureml-examples/blob/sdk-preview/sdk/jobs/single-step/lightgbm/iris/lightgbm-iris-sweep.ipynb?name=create-command)]-->
 
