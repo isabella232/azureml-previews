@@ -61,7 +61,7 @@ Let us tackle these steps below
 
 ### 1. Connect to the workspace
 
-To connect to the workspace, we need identifier parameters - a subscription, resource group and workspace name. We will use these details in the `MLClient` from `azure.ml` to get a handle to the required Azure Machine Learning workspace. To authenticate, we use the [default azure authentication](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python). Check this [example](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/jobs/configuration.ipynb) for more details on how to configure credentials and connect to a workspace.
+To connect to the workspace, we need identifier parameters - a subscription, resource group and workspace name. We will use these details in the `MLClient` from `azure.ml` to get a handle to the required Azure Machine Learning workspace. To authenticate, we use the [default azure authentication](https://docs.microsoft.com/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python). Check this [example](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/jobs/configuration.ipynb) for more details on how to configure credentials and connect to a workspace.
 
 <!--[!notebook-python[] (~/azureml-examples/blob/sdk-preview/sdk/jobs/single-step/lightgbm/iris/lightgbm-iris-sweep.ipynb?name=connect-workspace)]-->
 
@@ -146,7 +146,7 @@ In the above we have configured the following:
 * `command` - This is the command that needs to be run.
 * `inputs` - This is the dictionary of inputs using name value pairs to the command. The key is a name for the input within the context of the job and the value is the input value. Inputs are referenced in the `command` using the `${{inputs.<input_name>}}` expression. To use files or folders as inputs, we can use the `Input` class.
 
-For more details refer to the reference documentation [here](https://review.docs.microsoft.com/en-us/python/api/azure-ml/azure.ml?view=azure-ml-py&branch=sdk-cli-v2-preview-master#azure-ml-command)
+For more details refer to the reference documentation [here](https://review.docs.microsoft.com/python/api/azure-ml/azure.ml?view=azure-ml-py&branch=sdk-cli-v2-preview-master#azure-ml-command)
 
 ## Improve the model using hyperparameter sweep
 
